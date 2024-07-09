@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>minsweper</title>
+
+  <link rel="preload" href="faild.css" as="style" />
+  <link rel="preload" href="sucead.css" as="style" />
+  <link rel="preload" href="script.js" as="scipt" />
+
+  <link href="style.css" rel="stylesheet" type="text/css" id="the_cs" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+</head>
+
+<body>
+  <h1>
+    Minesweeper
+  </h1>
+
+  <p>Grid size x</p>
+  <input type="number" value="16" id="grid_inp_x" max="200" min="1">
+
+  <p>Grid size y</p>
+  <input type="number" value="16" id="grid_inp_y" max="110" min="1">
+
+  <p>Num mines</p>
+  <input type="number" value="30" id="mine_inp" min="1" max="1791">
+
+  <p id="vol_out">Volue: 70%</p>
+  <input type="range" min="0" max="100" value="70" id="volue_inp" class="slider">
+
+  <br><br>
+
+  <button
+    onclick="play(getElementById('mine_inp').value, getElementById('grid_inp_x').value, getElementById('grid_inp_y').value)"
+    class="play">Play</button>
+
+  <p id="output"></p>
+
+  <h2 id="highscore"></h2>
+
+  <script>
+    let num_mins = document.getElementById("mine_inp");
+    let bord_size_x = document.getElementById("grid_inp_x");
+    let bord_size_y = document.getElementById("grid_inp_y");
+    let slider = document.getElementById("volue_inp");
+
+    if (sessionStorage.getItem("mins") != null) {
+      num_mins.value = sessionStorage.getItem("mins");
+    }
+    if (sessionStorage.getItem("size_x") != null) {
+      bord_size_x.value = sessionStorage.getItem("size_x");
+    }
+    if (sessionStorage.getItem("size_y") != null) {
+      bord_size_y.value = sessionStorage.getItem("size_y");
+    }
+    if (sessionStorage.getItem("vol") != null) {
+      slider.value = sessionStorage.getItem("vol");
+      vol_out.innerHTML = `Volue: ${slider.value}%`;
+    }
+
+    let size_x = bord_size_x.value;
+    let size_y = bord_size_y.value;
+    let mins = num_mins.value;
+    let vol = slider.value;
+
+    slider.oninput = function () {
+      vol_out.innerHTML = `Volue: ${slider.value}%`;
+      vol = slider.value;
+    }
+
+    function play(num_mines, bord_size_x, bord_size_y) {
+      if (bord_size_x >= 1
+        &&
+        bord_size_x <= 110) {
+        size_x = bord_size_x;
+      }
+      if (bord_size_y >= 1
+        &&
+        bord_size_y <= 110) {
+        size_y = bord_size_y;
+      }
+      if (num_mines >= 1) {
+        mins = num_mines;
+      }
+      tot = (size_y * size_x) - mins;
+
+      sessionStorage.setItem("mins", mins);
+      sessionStorage.setItem("size_x", size_x);
+      sessionStorage.setItem("size_y", size_y);
+      sessionStorage.setItem("tot", tot);
+      sessionStorage.setItem("vol", vol);
+
+      location.href = "game.html";
+    }
+  </script>
+</body>
+
+</html>
